@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema(
   {
@@ -48,7 +49,7 @@ const userSchema = mongoose.Schema(
       type: String,
       validate(value) {
         if (!["male", "female", "others"].includes(value)) {
-          throw new error("Gender data is not valid");
+          throw new Error("Gender data is not valid");
         }
       },
     },
@@ -64,7 +65,7 @@ const userSchema = mongoose.Schema(
     },
     about: {
       type: String,
-      default: "THis is default description of the user!!",
+      default: "This is default description of the user!!",
     },
     skills: {
       type: [String],
@@ -93,6 +94,7 @@ userSchema.methods.validatePassword = async function (passwordInputByUser) {
   );
   return isPasswordValid;
 };
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
